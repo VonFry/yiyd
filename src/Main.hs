@@ -28,7 +28,10 @@ main = do
     dataPath <- getDataFileName "zy.yml"
     strData <- readFile dataPath
     if argAsk args == True
-       then putStrLn $ divine args strData
+       then case divine args strData of
+              Left str -> putStrLn str
+              Right str -> putStrLn $ "error: " ++ str ++ "\n"
+                                    ++ "Please contact to author about the issue."
        else IO () -- TODO
 
 opts :: ParserInfo Arguments
