@@ -3,11 +3,9 @@ module Main where
 import Options.Applicative
 import Data.Semigroup ((<>))
 
--- | cli arguments
-data Arguments = Arguments
-  { ask      :: Bool
-  , quiet    :: Bool
-  , yao      :: Bool }
+import Paths_yiyd
+import Arguments
+import ZY.Divination (divine, divineAsk)
 
 arguments :: Parser Arguments
 arguments = Arguments
@@ -27,7 +25,11 @@ arguments = Arguments
 main :: IO ()
 main = do
     args <- execParser opts
-    return ()
+    dataPath <- getDataFileName "zy.yml"
+    strData <- readFile dataPath
+    if argAsk args == True
+       then putStrLn $ divine args strData
+       else IO () -- TODO
 
 opts :: ParserInfo Arguments
 opts = info (arguments <**> helper)
