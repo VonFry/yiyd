@@ -1,9 +1,12 @@
-resolver: lts-9.5
+resolver: lts-10.1
 packages:
 - .
 
 extra-deps: []
 
 flags: {}
+
+ghc-options:
+  "$locals": -Wall
 
 extra-package-dbs: []
