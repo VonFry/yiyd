@@ -24,6 +24,7 @@ executable yiyd
                     ,  MultiWayIf
   build-depends:       base >= 4.7 && < 5
                     ,  yaml
+                    ,  optparse-applicative
 
 test-suite test
   type:                exitcode-stdio-1.0
@@ -31,6 +32,7 @@ test-suite test
   main-is:             Spec.hs
   build-depends:       base >=4.7 && < 5
                     ,  yaml
+                    ,  optparse-applicative
                     ,  hspec
   default-extensions:  LambdaCase
                     ,  MultiWayIf
