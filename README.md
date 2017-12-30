@@ -37,11 +37,10 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 | 参数 | 说明 |
 | --- | --- |
-| `—verbose`, `-v` | （默认启用）打印详细过程，包含占卜流程 |
-| `—ask`, `-a` | 仅在`verbose`下有效，按步骤打印结果，且每步后询问是否继续 |
-| `—quiet`, `-q` | 仅显示结果 |
-| `—yao`, `-y` | 在`quiet`下，结果追加爻辞 |
-| `—no-yao`, `-ny` | 在`verbose`下，结果不显示爻辞 |
+| `—-verbose`, `-v` | （默认启用）打印详细过程，包含占卜流程 |
+| `—-ask`, `-a` | 仅在`verbose`下有效，按步骤打印结果，且每步后询问是否继续 |
+| `—-quiet`, `-q` | 仅显示结果 |
+| `--yao`, `-y` | 在`quiet`下，结果追加爻辞 |
 
 注：如果想要保存至文件或什么，请使用重定向
 
