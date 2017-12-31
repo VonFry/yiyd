@@ -29,10 +29,18 @@ main = do
     strData <- readFile dataPath
     if argAsk args == True
        then case divine args strData of
-              Left str -> putStrLn str
+              Left  str -> putStrLn str
               Right str -> putStrLn $ "error: " ++ str ++ "\n"
-                                    ++ "Please contact to author about the issue."
-       else IO () -- TODO
+                                   ++ "Please contact to author about the issue."
+       else askIter
+  where
+    askerIter = askIter' 0
+    askIter' setup = do
+        putStrLn "Do you want to next setup([y]/n):"
+        ask <- getChar
+        if ask == '\n'  || ask == 'y'
+           then renurn() -- TODO add divine
+           else return ()
 
 opts :: ParserInfo Arguments
 opts = info (arguments <**> helper)

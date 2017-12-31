@@ -22,6 +22,7 @@ executable yiyd
   default-language:    Haskell2010
   default-extensions:  LambdaCase
                     ,  MultiWayIf
+                    ,  OverloadedStrings
   build-depends:       base >= 4.7 && < 5
                     ,  yaml
                     ,  optparse-applicative
@@ -36,4 +37,5 @@ test-suite test
                     ,  hspec
   default-extensions:  LambdaCase
                     ,  MultiWayIf
+                    ,  OverloadedStrings
   ghc-options:         -Wall, -DDEBUG
