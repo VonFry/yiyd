@@ -5,7 +5,7 @@ import Data.Semigroup ((<>))
 
 import Paths_yiyd
 import Arguments
-import ZY.Divination (divine, divineAsk)
+import ZY.Divination (divine)
 
 arguments :: Parser Arguments
 arguments = Arguments
@@ -32,15 +32,7 @@ main = do
               Left  str -> putStrLn str
               Right str -> putStrLn $ "error: " ++ str ++ "\n"
                                    ++ "Please contact to author about the issue."
-       else askIter
-  where
-    askerIter = askIter' 0
-    askIter' setup = do
-        putStrLn "Do you want to next setup([y]/n):"
-        ask <- getChar
-        if ask == '\n'  || ask == 'y'
-           then renurn() -- TODO add divine
-           else return ()
+       else return ()
 
 opts :: ParserInfo Arguments
 opts = info (arguments <**> helper)
