@@ -3,6 +3,11 @@ module Main where
 import Options.Applicative
 import Data.Semigroup ((<>))
 
+import Data.String (fromString)
+import Prelude hiding (readFile, putStrLn)
+import Data.ByteString (ByteString, append, readFile)
+import Data.ByteString.Char8 (putStrLn)
+import Data.Sequence
 import Paths_yiyd
 import Arguments
 import ZY.Divination (divine)
@@ -22,11 +27,11 @@ main :: IO ()
 main = do
     args <- execParser opts
     dataPath <- getDataFileName "zy.yml"
-    strData <- readFile dataPath
+    strData <- readFile $ fromString dataPath
     case divine args strData of
-        Left  str -> putStrLn str
-        Right str -> putStrLn $ "error: " ++ str ++ "\n"
-                             ++ "Please contact to author about the issue."
+        Left  msg -> putStrLn msg
+        Right msg -> putStrLn $ "error: " `append` msg `append` "\n"
+                       `append` "Please contact to author about the issue."
 
 opts :: ParserInfo Arguments
 opts = info (arguments <**> helper)

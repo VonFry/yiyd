@@ -23,21 +23,31 @@ executable yiyd
   default-extensions:  LambdaCase
                     ,  MultiWayIf
                     ,  OverloadedStrings
+                    ,  OverloadedLists
   build-depends:       base >= 4.7 && < 5
                     ,  yaml
                     ,  optparse-applicative
-                    ,  ZY.Divination
+                    ,  bytestring
+                    ,  containers
+  other-modules:       ZY.Divination
+                    ,  Paths_yiyd
+                    ,  Arguments
 
 test-suite test
   type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
+  hs-source-dirs:      test, src
   main-is:             Spec.hs
-  build-depends:       base >=4.7 && < 5
-                    ,  yaml
-                    ,  optparse-applicative
-                    ,  hspec
-                    ,  ZY.Divination
   default-extensions:  LambdaCase
                     ,  MultiWayIf
                     ,  OverloadedStrings
+                    ,  OverloadedLists
+  build-depends:       base >=4.7 && < 5
+                    ,  optparse-applicative
+                    ,  hspec
+                    ,  yaml
+                    ,  bytestring
+                    ,  containers
+  other-modules:       ZY.Divination
+                    ,  Paths_yiyd
+                    ,  Arguments
   ghc-options:         -Wall, -DDEBUG
