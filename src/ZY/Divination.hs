@@ -4,8 +4,12 @@ module ZY.Divination where
 
 import Arguments (Arguments)
 
-divine ::
-    Arguments -- ^ arguments in the cli
+divine
+    :: Arguments -- ^ arguments in the cli
     -> String -- ^ data for string
     -> Either String String -- ^ output info. Left value is the output string. Right value is the error string.
 divine args dataStr = Right "error"
+
+    -- | Generate one 爻 with 三变 method
+generateYao :: Int
+generateYao = -1

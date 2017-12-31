@@ -26,6 +26,7 @@ executable yiyd
   build-depends:       base >= 4.7 && < 5
                     ,  yaml
                     ,  optparse-applicative
+                    ,  ZY.Divination
 
 test-suite test
   type:                exitcode-stdio-1.0
@@ -35,6 +36,7 @@ test-suite test
                     ,  yaml
                     ,  optparse-applicative
                     ,  hspec
+                    ,  ZY.Divination
   default-extensions:  LambdaCase
                     ,  MultiWayIf
                     ,  OverloadedStrings

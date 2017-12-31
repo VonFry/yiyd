@@ -7,6 +7,6 @@ extra-deps: []
 flags: {}
 
 ghc-options:
-  "$locals": -Wall
+  "$locals": -Wall -O2
 
 extra-package-dbs: []

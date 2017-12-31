@@ -1,0 +1,8 @@
+* yiyd [0/2]
+** TODO divine [0/4]
+   - [ ] three changes for a yao
+   - [ ] iter yao on a gua
+   - [ ] integrate a gua
+   - [ ] a iter func for ask
+** TODO main [0/1]
+   - [ ] iter for ask
