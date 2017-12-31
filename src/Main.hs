@@ -10,10 +10,6 @@ import ZY.Divination (divine)
 arguments :: Parser Arguments
 arguments = Arguments
       <$> switch
-          ( long "ask"
-         <> short 'a'
-         <> help "ask you whether do next. This only work without quiet." )
-      <*> switch
           ( long "quiet"
          <> short 'q'
          <> help "Whether to be quiet. This will rewrite verbose options." )
@@ -27,12 +23,10 @@ main = do
     args <- execParser opts
     dataPath <- getDataFileName "zy.yml"
     strData <- readFile dataPath
-    if argAsk args == True
-       then case divine args strData of
-              Left  str -> putStrLn str
-              Right str -> putStrLn $ "error: " ++ str ++ "\n"
-                                   ++ "Please contact to author about the issue."
-       else return ()
+    case divine args strData of
+        Left  str -> putStrLn str
+        Right str -> putStrLn $ "error: " ++ str ++ "\n"
+                             ++ "Please contact to author about the issue."
 
 opts :: ParserInfo Arguments
 opts = info (arguments <**> helper)

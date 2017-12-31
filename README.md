@@ -37,7 +37,6 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 | 参数 | 说明 |
 | --- | --- |
-| `—-ask`, `-a` | 仅在非`quiet`下有效，按步骤打印结果，且每步后询问是否继续 |
 | `—-quiet`, `-q` | 仅显示结果 |
 | `--yao`, `-y` | 在`quiet`下，结果追加爻辞 |
 
