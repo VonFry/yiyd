@@ -29,8 +29,8 @@ main = do
     dataPath <- getDataFileName "zy.yml"
     strData <- readFile $ fromString dataPath
     case divine args strData of
-        Left  msg -> putStrLn msg
-        Right msg -> putStrLn $ "error: " `append` msg `append` "\n"
+        Right msg -> putStrLn msg
+        Left  msg -> putStrLn $ "error: " `append` msg `append` "\n"
                        `append` "Please contact to author about the issue."
 
 opts :: ParserInfo Arguments
