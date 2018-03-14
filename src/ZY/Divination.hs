@@ -14,7 +14,7 @@ divine
     :: Arguments -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
-divine args dataStr = Right "error"
+divine args dataStr = Left "error"
   where
     zy = Y.decode dataStr :: Maybe Y.Array
 
@@ -41,7 +41,7 @@ convertToZhiGua = convertToGua . fmap (\y ->
 
 -- | read gua from zhouyi
 readGuaNumber
-    :: Gua    -- ^ converted gua
-    -> String -- ^ data for string
-    -> Int    -- ^ number of the gua
+    :: Gua     -- ^ converted gua
+    -> Y.Array -- ^ data for zy
+    -> Int     -- ^ number of the gua
 readGuaNumber g d = -1
