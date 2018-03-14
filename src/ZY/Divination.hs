@@ -3,11 +3,12 @@
 module ZY.Divination where
 
 import Data.ByteString (ByteString)
-import Data.Sequence (Seq)
+import Data.Sequence (Seq, findIndexL)
+import Control.Monad (join)
 
 import Arguments (Arguments)
 
-import Data.Yaml (decode, Value)
+import Data.Yaml (decode, Value, Object, Parser, (.:), parseMaybe, parseJSON, FromJSON)
 
 type Gua = Seq Int
 
@@ -45,7 +46,18 @@ convertToZhiGua = convertToGua . fmap (\y ->
 
 -- | read gua's index from zhouyi
 readGuaNumber
-    :: Gua       -- ^ converted gua
-    -> Value     -- ^ data for zy
-    -> Maybe Int -- ^ number of the gua
-readGuaNumber g d = return (-1)
+    :: Gua        -- ^ converted gua
+    -> Value      -- ^ data for zy
+    -> Maybe Int  -- ^ number of the gua
+readGuaNumber g = join . parseMaybe (\d -> do
+    seq <- parseJSON d
+    return $ findIndexL fGua seq
+    )
+  where
+    fGua :: Object -> Bool
+    fGua o = case parseMaybe (\v -> do
+        sym <- v .: "symbol"
+        return $ sym == g
+        ) o of
+        Just b -> b
+        otherwise -> False
