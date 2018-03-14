@@ -6,7 +6,8 @@ import Data.ByteString (ByteString)
 import Data.Sequence (Seq)
 
 import Arguments (Arguments)
-import qualified Data.Yaml as Y
+
+import Data.Yaml (decode, Value)
 
 type Gua = Seq Int
 
@@ -14,9 +15,12 @@ divine
     :: Arguments -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
-divine args dataStr = Left "error"
+divine args dataStr =
+    case zy of
+        Just yaml -> Left "Not finish"
+        Nothing -> Left "YAML Decode error, please contact with developer."
   where
-    zy = Y.decode dataStr :: Maybe Y.Array
+    zy = decode dataStr :: Maybe Value
 
 -- | Generate one 爻 with 三变 method
 generateYao
@@ -39,9 +43,9 @@ convertToZhiGua = convertToGua . fmap (\y ->
          6 -> 9
          _ -> y)
 
--- | read gua from zhouyi
+-- | read gua's index from zhouyi
 readGuaNumber
-    :: Gua     -- ^ converted gua
-    -> Y.Array -- ^ data for zy
-    -> Int     -- ^ number of the gua
-readGuaNumber g d = -1
+    :: Gua       -- ^ converted gua
+    -> Value     -- ^ data for zy
+    -> Maybe Int -- ^ number of the gua
+readGuaNumber g d = return (-1)
