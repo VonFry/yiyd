@@ -5,9 +5,8 @@ import Data.Semigroup ((<>))
 
 import Data.String (fromString)
 import Prelude hiding (readFile, putStrLn)
-import Data.ByteString (ByteString, append, readFile)
+import Data.ByteString (append, readFile)
 import Data.ByteString.Char8 (putStrLn)
-import Data.Sequence
 import Paths_yiyd
 import Arguments
 import ZY.Divination (divine)

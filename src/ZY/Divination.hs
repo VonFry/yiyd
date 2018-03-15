@@ -6,7 +6,7 @@ import Data.ByteString (ByteString)
 import Data.Sequence (Seq, findIndexL)
 import Control.Monad (join)
 
-import Arguments (Arguments)
+import Arguments (Arguments(Arguments))
 
 import Data.Yaml (decode, Value, Object, Parser, (.:), parseMaybe, parseJSON, FromJSON)
 
@@ -16,9 +16,9 @@ divine
     :: Arguments -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
-divine args dataStr =
+divine (Arguments {..}) dataStr =
     case zy of
-        Just yaml -> Left "Not finish"
+        Just zy' -> Left "Not finish"
         Nothing -> Left "YAML Decode error, please contact with developer."
   where
     zy = decode dataStr :: Maybe Value
@@ -60,4 +60,4 @@ readGuaNumber g = join . parseMaybe (\d -> do
         return $ sym == g
         ) o of
         Just b -> b
-        otherwise -> False
+        _ -> False

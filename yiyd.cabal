@@ -25,6 +25,7 @@ executable yiyd
                     ,  OverloadedStrings
                     ,  OverloadedLists
                     ,  NamedFieldPuns
+                    ,  RecordWildCards
   build-depends:       base >= 4.7 && < 5
                     ,  yaml
                     ,  optparse-applicative
@@ -43,6 +44,7 @@ test-suite test
                     ,  OverloadedStrings
                     ,  OverloadedLists
                     ,  NamedFieldPuns
+                    ,  RecordWildCards
   build-depends:       base >=4.7 && < 5
                     ,  optparse-applicative
                     ,  hspec
