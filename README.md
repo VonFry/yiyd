@@ -12,11 +12,11 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 本项目仍开发中，什么时候会完成本人也不知道，说不定永远写不完呢。
 
-# 功能
+# 功能(Function)
 
 按蓍草占卜法，配合周易，生成结果。
 
-# 安装
+# 安装(Install)
 
 ## clone
 
@@ -32,7 +32,7 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 `cabal install yiyd`
 
-# 使用
+# 使用(Usage)
 
 
 | 参数 | 说明 |
@@ -41,6 +41,14 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 | `--yao`, `-y` | 在`quiet`下，结果追加爻辞 |
 
 注：如果想要保存至文件或什么，请使用重定向
+
+# 说明(docs)
+
+dot文件为graphviz语法，可用对应命令生成图片。
+
+所有图片为简图，可能不太好理解。
+
+- [一爻生成过程](./docs/一爻.dot)
 
 # TODO
 
@@ -63,4 +71,3 @@ See: [todo](./todo.org)
 这样，推演过程就全部结束，得到一个六爻“本卦”或加上一个“之卦”。以上介绍的这种占筮取卦方法即为后人所称“文王卦”或“六爻大课”。
 
 然后，根据相应的推论规则对推演所成的卦进行推论（推理解释）。
-

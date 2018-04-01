@@ -31,6 +31,7 @@ executable yiyd
                     ,  optparse-applicative
                     ,  bytestring
                     ,  containers
+                    ,  random
   other-modules:       ZY.Divination
                     ,  Paths_yiyd
                     ,  Arguments
@@ -51,6 +52,7 @@ test-suite test
                     ,  yaml
                     ,  bytestring
                     ,  containers
+                    ,  random
   other-modules:       ZY.Divination
                     ,  Paths_yiyd
                     ,  Arguments

@@ -1,0 +1,28 @@
+digraph {
+    g [label="64"];
+    g_rem [label="remainder"];
+    l [label="x"];
+    l_0 [label="1"];
+    l_1 [label="x - 1"];
+    l_11 [label="(x - 1) mod 4"];
+    r [label="64 - x"];
+    r_1 [label="(64 - x) mod 4"];
+    sum [label="sum"];
+    deduct [label="64 - sum"]
+    result [label="36|32|28|24 / 4"]
+    g -> g_rem;
+    g_rem -> l;
+    g_rem -> r;
+    l -> l_0;
+    l -> l_1;
+    l_1 -> l_11;
+    r ->  r_1;
+    l_11 -> sum;
+    r_1 -> sum;
+    l_0 -> sum;
+    sum -> deduct;
+    edge [label="loop 3 times"];
+    deduct -> g_rem;
+    edge [label="3rd"];
+    deduct -> result;
+}

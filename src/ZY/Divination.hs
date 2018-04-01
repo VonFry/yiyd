@@ -8,6 +8,8 @@ import Control.Monad (join)
 
 import Arguments (Arguments(Arguments))
 
+import System.Random (randomR, mkStdInt)
+
 import Data.Yaml (decode, Value, Object, Parser, (.:), parseMaybe, parseJSON, FromJSON)
 
 type Gua = Seq Int
