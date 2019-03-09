@@ -2,12 +2,12 @@ name:                yiyd
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/VonFry/yiyd
+homepage:            https://gitlab.com/Vonfry/yiyd
 license:             GPL-3
 license-file:        LICENSE
 author:              Vonfry
-maintainer:          vonfry314@gmail.com
-copyright:           2017 Vonfry
+maintainer:          mail@vonfry.name
+copyright:           2019 Vonfry
 category:            CLI
 build-type:          Simple
 cabal-version:       >=1.10

@@ -1,8 +1,8 @@
 # yiyd
 ![lang: haskell](https://img.shields.io/badge/lang-haskell-brightgreen.svg)
-[![Travis Master](https://img.shields.io/travis/VonFry/yiyd/master.svg?label=master)](https://travis-ci.org/VonFry/yiyd)
-[![Travis Dev](https://img.shields.io/travis/VonFry/yiyd/develop.svg?label=develop)](https://travis-ci.org/VonFry/yiyd)
 [![Hackage](https://img.shields.io/hackage/v/yiyd.svg)](https://hackage.haskell.org/package/yiyd)
+![Gitlab pipeline status (master)](https://img.shields.io/gitlab/pipeline/Vonfry/yiyd/master.svg)
+![Gitlab pipeline status (develop)](https://img.shields.io/gitlab/pipeline/Vonfry/yiyd/develop.svg)
 
 This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese traditional divination with _zhouyi_. So I'll write other document with Chinese instead of other language. I think it's so hard to describe them without chinese.
 
@@ -18,22 +18,27 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 # 安装(Install)
 
-## clone
+Some ways are supported to install this package.
+
+- hackage
+- source
+
+## Source
+
+### clone
 
 1. clone
-2. `stack build`
-3. (optional) `stack install`
+2. build
+3. (optional) install
 
-也可以使用`cabal`。如果不是haskell开发员，为什么不自己写一个呢？本上没有上homebrew一类管理的想法。
+### build
 
-## hackage
+This project use Nix and cabal as the default building system, so you can use one of them to build this project.
 
-在项目最基本功能完成前，不会发布至hackage。
-
-`cabal install yiyd`
+There are some build
+###
 
 # 使用(Usage)
-
 
 | 参数 | 说明 |
 | --- | --- |

@@ -1,0 +1,36 @@
+image: haskell:8
+
+stages:
+  - build
+  - test
+  - dist
+  - upload
+
+build:
+  stage: build
+  script: cabal new-build
+  only:
+    refs:
+      - master
+      - develop
+
+test:
+  stage: test
+  script: cabal new-test
+  only:
+    refs:
+      - master
+      - develop
+
+dist:
+  stage: dist
+  script: cabal new-sdist
+  only: master
+
+upload:
+  when: manual
+  stage: upload
+  script: cabal upload --publish ./dist/
+  environment:
+    name: hackage
+    url: https://hackage.haskell.org/package/yiyd
