@@ -25,7 +25,8 @@ test:
 dist:
   stage: dist
   script: cabal new-sdist
-  only: master
+  only:
+    - master
 
 upload:
   when: manual
