@@ -1,16 +1,16 @@
+cabal-version:       2.4
 name:                yiyd
 version:             0.1.0.0
 -- synopsis:
 -- description:
 homepage:            https://gitlab.com/Vonfry/yiyd
-license:             GPL-3
+license:             GPL-3.0-only
 license-file:        LICENSE
 author:              Vonfry
 maintainer:          mail@vonfry.name
 copyright:           2019 Vonfry
 category:            CLI
 build-type:          Simple
-cabal-version:       >=1.10
 extra-source-files:  README.md
 
 data-dir: static
