@@ -1,10 +1,19 @@
 image: haskell:8
 
 stages:
+  - pre
   - build
   - test
   - dist
   - upload
+
+pre:
+  stage: pre
+  script: cabal new-update
+  only:
+    refs:
+      - master
+      - develop
 
 build:
   stage: build
