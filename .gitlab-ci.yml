@@ -1,5 +1,8 @@
 image: haskell:8
 
+before_script:
+  - cabal new-update
+
 stages:
   - pre
   - build
@@ -34,6 +37,9 @@ test:
 dist:
   stage: dist
   script: cabal new-sdist
+  artifacts:
+    paths:
+      - dist-newstyle/sdist/yiyd-*.tar.gz
   only:
     - master
 
