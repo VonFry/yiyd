@@ -8,7 +8,7 @@ import Control.Monad (join)
 
 import Arguments (Arguments(Arguments))
 
-import System.Random (randomR, mkStdInt)
+import System.Random (randomR, mkStdGen)
 
 import Data.Yaml (decode, Value, Object, Parser, (.:), parseMaybe, parseJSON, FromJSON)
 
@@ -18,7 +18,7 @@ divine
     :: Arguments -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
-divine (Arguments {..}) dataStr =
+divine Arguments {..} dataStr =
     case zy of
         Just zy' -> Left "Not finish"
         Nothing -> Left "YAML Decode error, please contact with developer."
@@ -28,7 +28,10 @@ divine (Arguments {..}) dataStr =
 -- | Generate one 爻 with 三变 method
 generateYao
     :: Int -- ^ return 9, 8, 7, 6.
-generateYao = -1
+generateYao = fst r
+  where
+    g = mkStdGen 64
+    r = randomR (6, 9) g
 
 -- | convert to 本卦.
 convertToGua
