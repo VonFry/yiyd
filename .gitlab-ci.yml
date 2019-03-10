@@ -50,6 +50,8 @@ upload:
   when: manual
   stage: upload
   script: cabal upload --publish ./dist/
+  only:
+    - master
   environment:
     name: hackage
     url: https://hackage.haskell.org/package/yiyd
