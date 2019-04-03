@@ -3,7 +3,7 @@
 module ZY.Divination where
 
 import Data.ByteString (ByteString)
-import Data.Sequence (Seq, findIndexL)
+import Data.Sequence (Seq, findIndexL, (:<|), (:|>), Empty)
 import Control.Monad (join)
 
 import Arguments (Arguments(Arguments))
@@ -15,15 +15,17 @@ import Data.Yaml (decode, Value, Object, Parser, (.:), parseMaybe, parseJSON, Fr
 type Gua = Seq Int
 
 divine
-    :: Arguments -- ^ arguments in the cli
+    :: Arguments  -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
 divine Arguments {..} dataStr =
     case zy of
-        Just zy' -> Left "Not finish"
+        Just zy' -> Right output zy'
         Nothing -> Left "YAML Decode error, please contact with developer."
   where
-    zy = decode dataStr :: Maybe Value
+     zy = decode dataStr :: Maybe Value
+     g  = generateGua
+     g' = convertToGua g
 
 -- | Generate one 爻 with 三变 method
 generateYao
@@ -32,6 +34,10 @@ generateYao = fst r
   where
     g = mkStdGen 64
     r = randomR (6, 9) g
+
+-- | generate 卦
+generateGua :: Gua
+generateGua = Empty
 
 -- | convert to 本卦.
 convertToGua
