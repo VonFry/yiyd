@@ -2,7 +2,9 @@
 -- | Divine with zhouyi
 module ZY.Divination where
 
-import Data.ByteString (ByteString, concat)
+import Prelude hiding (concat)
+import Control.Monad.Reader (Reader, runReader)
+import Data.ByteString (ByteString, concat, append)
 import Data.Sequence (Seq(..), findIndexL)
 import GHC.Generics (Generic)
 import System.Random (randomR, mkStdGen)
@@ -31,7 +33,7 @@ divine Arguments {..} dataStr =
   where
     g  = generateGua
     g' = convertToGua g
-    gName  = Reader $ \(ZY {name}, idx) -> "卦名：" `append` name
+    gName  = Reader $ \(ZY {name}, _) -> "卦名：" `append` name
     gGen   = Reader $ \_ -> "卦："   `append` foldr (append . (flip . append $ " ") . show) g ""
     gOrig  = Reader $ \_ -> "本卦：" `append` foldr (append . (flip . append $ " ") . show) g' ""
     gZhi   = Reader $ \_ -> "之卦：" `append` foldr (append . (flip . append $ " ") . show) (convertToZhiGua g') ""
@@ -88,4 +90,4 @@ readGuaNumber
     :: Gua                   -- ^ converted gua
     -> ZYType                -- ^ data for zy
     -> Either ByteString Int -- ^ number of the gua
-readGuaNumber g = Left "Not finish"
+readGuaNumber g zy = Left "Not finish"

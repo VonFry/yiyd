@@ -27,6 +27,7 @@ executable yiyd
                     ,  NamedFieldPuns
                     ,  RecordWildCards
   build-depends:       base >= 4.7 && < 5
+                    ,   mtl
                     ,  yaml
                     ,  optparse-applicative
                     ,  bytestring
