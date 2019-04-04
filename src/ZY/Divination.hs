@@ -1,43 +1,71 @@
+{-# LANGUAGE DeriveGeneric #-}
 -- | Divine with zhouyi
-
 module ZY.Divination where
 
-import Data.ByteString (ByteString)
-import Data.Sequence (Seq, findIndexL, (:<|), (:|>), Empty)
-import Control.Monad (join)
+import Data.ByteString (ByteString, concat)
+import Data.Sequence (Seq(..), findIndexL)
+import GHC.Generics (Generic)
+import System.Random (randomR, mkStdGen)
+import Data.Yaml (decodeEither', FromJSON)
 
 import Arguments (Arguments(Arguments))
 
-import System.Random (randomR, mkStdGen)
-
-import Data.Yaml (decode, Value, Object, Parser, (.:), parseMaybe, parseJSON, FromJSON)
-
 type Gua = Seq Int
+data ZY = ZY
+    { symbol  :: Gua
+    , name    :: ByteString
+    , content :: ByteString
+    } deriving (Generic, Show)
+instance FromJSON ZY
+type ZYType = Seq ZY
 
 divine
     :: Arguments  -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
 divine Arguments {..} dataStr =
-    case zy of
-        Just zy' -> Right output zy'
-        Nothing -> Left "YAML Decode error, please contact with developer."
+  do
+    zy <- decodeEither' dataStr
+    idx <- readGuaNumber g'
+    return $ runReader output (zy `index` idx, idx)
   where
-     zy = decode dataStr :: Maybe Value
-     g  = generateGua
-     g' = convertToGua g
+    g  = generateGua
+    g' = convertToGua g
+    gName  = Reader $ \(ZY {name}, idx) -> "卦名：" `append` name
+    gGen   = Reader $ \_ -> "卦："   `append` foldr (append . (flip . append $ " ") . show) g ""
+    gOrig  = Reader $ \_ -> "本卦：" `append` foldr (append . (flip . append $ " ") . show) g' ""
+    gZhi   = Reader $ \_ -> "之卦：" `append` foldr (append . (flip . append $ " ") . show) (convertToZhiGua g') ""
+    gIdx   = Reader $ \(_ , idx) -> "卦序：" `append` show idx `append` "（0-63）"
+    gText  = Reader $ \(ZY {content}, idx) -> "卦辞：" `append` content
+    output =
+      do
+        idx  <- gIdx
+        name <- gName
+        gen  <- gGen
+        orig <- gOrig
+        zhi  <- gZhi
+        text <- gText
+        return $ concat [idx, name, gen, orig, zhi, text]
 
 -- | Generate one 爻 with 三变 method
 generateYao
-    :: Int -- ^ return 9, 8, 7, 6.
-generateYao = fst r
+    :: Int -- ^ seed
+    -> Int -- ^ return 9, 8, 7, 6.
+generateYao seed = fst r
   where
-    g = mkStdGen 64
+    g = mkStdGen seed
     r = randomR (6, 9) g
 
 -- | generate 卦
 generateGua :: Gua
-generateGua = Empty
+generateGua = generateGua' Empty
+  where
+    generateGua' :: Gua -> Gua
+    generateGua' g =
+        let l = length g in
+        if l <= 6
+            then generateGua' $ generateYao l :<| g
+            else g
 
 -- | convert to 本卦.
 convertToGua
@@ -57,18 +85,7 @@ convertToZhiGua = convertToGua . fmap (\y ->
 
 -- | read gua's index from zhouyi
 readGuaNumber
-    :: Gua        -- ^ converted gua
-    -> Value      -- ^ data for zy
-    -> Maybe Int  -- ^ number of the gua
-readGuaNumber g = join . parseMaybe (\d -> do
-    seq <- parseJSON d
-    return $ findIndexL fGua seq
-    )
-  where
-    fGua :: Object -> Bool
-    fGua o = case parseMaybe (\v -> do
-        sym <- v .: "symbol"
-        return $ sym == g
-        ) o of
-        Just b -> b
-        _ -> False
+    :: Gua                   -- ^ converted gua
+    -> ZYType                -- ^ data for zy
+    -> Either ByteString Int -- ^ number of the gua
+readGuaNumber g = Left "Not finish"
