@@ -96,6 +96,6 @@ readGuaNumber
     -> Either String Int -- ^ number of the gua
 readGuaNumber g zy = maybe errorLeft return find
   where
-    errorLeft = Left "Not Found Gua, please contact to developer to fix."
+    errorLeft = Left "Not Found Gua."
     find = findIndexL eq' zy
     eq' (ZY {symbol}) = g == symbol
