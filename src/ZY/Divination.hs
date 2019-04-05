@@ -9,7 +9,7 @@ import GHC.Generics (Generic)
 import System.Random (randomR, mkStdGen)
 import Data.Yaml (decodeEither', FromJSON)
 
-import Arguments (Arguments(Arguments))
+import Arguments (Arguments(..))
 
 type Gua = Seq Int
 data ZY = ZY
@@ -24,21 +24,26 @@ divine
     :: Arguments  -- ^ arguments in the cli
     -> ByteString -- ^ data for string
     -> Either String String -- ^ output info. Left value is the output string. Right value is the error string.
-divine Arguments {..} dataStr = do
+divine args dataStr = do
     zy <- parseDE $ decodeEither' dataStr
     idx <- readGuaNumber g' zy
-    return $ runReader output (zy `index` idx, idx)
+    return $ runReader output (args, zy `index` idx, idx)
   where
     parseDE (Right z) = return z
     parseDE (Left  e) = Left $ show e
+    checkArgQY args@(Arguments {..}) str
+        | (argQuiet && argYao) || not argQuiet = str
+        | otherwise = ""
     g  = generateGua
     g' = convertToGua g
-    gName  = reader $ \(ZY {name}, _) -> "卦名：" ++ name
-    gGen   = reader $ \_ -> "卦："   ++ concatMap ((++" ") . show) g
-    gOrig  = reader $ \_ -> "本卦：" ++ concatMap ((++" ") . show) g'
-    gZhi   = reader $ \_ -> "之卦：" ++ concatMap ((++" ") . show) (convertToZhiGua g')
-    gIdx   = reader $ \(_, idx) -> "卦序：" ++ show idx ++ "（0-63）"
-    gText  = reader $ \(ZY {content}, _) -> "卦辞：" ++ content
+    gName  = reader $ \(_, ZY {name}, _) -> "卦名：" ++ name
+    gGen   = reader $ \(args, _, _) -> checkArgQY args $ "爻：" ++ concatMap ((++" ") . show) g
+    gOrig  = reader $ \(args, _, _) -> checkArgQY args $ "本卦：" ++ concatMap ((++" ") . show) g'
+    gZhi   = reader $ \(args, _, _) -> checkArgQY args $ "之卦：" ++ concatMap ((++" ") . show) (convertToZhiGua g')
+    gIdx   = reader $ \(_, _, idx) -> "卦序：" ++ show idx ++ "（0-63）"
+    gText  = reader $ \((Arguments {argQuiet}), ZY {content}, _) ->
+        if argQuiet then "卦辞：" ++ content
+                    else ""
     output = do
         idx  <- gIdx
         name <- gName

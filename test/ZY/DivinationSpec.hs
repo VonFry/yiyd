@@ -3,14 +3,25 @@
 module ZY.DivinationSpec (spec) where
 
 import Test.Hspec
+
+import Arguments
 import ZY.Divination
 
+import Data.String (fromString)
+import Prelude hiding (readFile)
+import Data.ByteString (readFile)
+import Paths_yiyd
+
 spec = do
-  it "generate yao" $
-    generateYao `shouldSatisfy` (flip . elem $ [9, 8, 7, 6])
-  it "convert to Gua" $
-    pending
-  it "convert to zhi gua" $
-    pending
-  it "read gua number" $
-    pending
+    it "divine" $
+        satisfy (dataStrIO >>= return . divine args) `shouldReturn` True
+  where
+      dataStrIO = do
+          dataPath <- getDataFileName "zy.yml"
+          readFile $ fromString dataPath
+      satisfy e = e >>= \case
+          Right _ -> return True
+          _       -> return False
+      args = Arguments
+          { argQuiet = True
+          , argYao   = False }
