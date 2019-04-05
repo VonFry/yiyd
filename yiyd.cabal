@@ -27,7 +27,7 @@ executable yiyd
                     ,  NamedFieldPuns
                     ,  RecordWildCards
   build-depends:       base >= 4.7 && < 5
-                    ,   mtl
+                    ,  mtl
                     ,  yaml
                     ,  optparse-applicative
                     ,  bytestring
@@ -50,6 +50,7 @@ test-suite test
   build-depends:       base >=4.7 && < 5
                     ,  optparse-applicative
                     ,  hspec
+                    ,  mtl
                     ,  yaml
                     ,  bytestring
                     ,  containers

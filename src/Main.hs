@@ -4,9 +4,8 @@ import Options.Applicative
 import Data.Semigroup ((<>))
 
 import Data.String (fromString)
-import Prelude hiding (readFile, putStrLn)
-import Data.ByteString (append, readFile)
-import Data.ByteString.Char8 (putStrLn)
+import Prelude hiding (readFile)
+import Data.ByteString (readFile)
 import Paths_yiyd
 import Arguments
 import ZY.Divination (divine)
@@ -29,8 +28,8 @@ main = do
     strData <- readFile $ fromString dataPath
     case divine args strData of
         Right msg -> putStrLn msg
-        Left  msg -> putStrLn $ "error: " `append` msg `append` "\n"
-                       `append` "Please contact to author about the issue."
+        Left  msg -> putStrLn $ "error: " ++ msg ++ "\n"
+                       ++ "Please contact to author about the issue."
 
 opts :: ParserInfo Arguments
 opts = info (arguments <**> helper)

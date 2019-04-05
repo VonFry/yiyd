@@ -2,10 +2,9 @@
 -- | Divine with zhouyi
 module ZY.Divination where
 
-import Prelude hiding (concat)
-import Control.Monad.Reader (Reader, runReader)
-import Data.ByteString (ByteString, concat, append)
-import Data.Sequence (Seq(..), findIndexL)
+import Control.Monad.Reader (reader, runReader)
+import Data.ByteString (ByteString)
+import Data.Sequence (Seq(..), findIndexL, index)
 import GHC.Generics (Generic)
 import System.Random (randomR, mkStdGen)
 import Data.Yaml (decodeEither', FromJSON)
@@ -15,8 +14,8 @@ import Arguments (Arguments(Arguments))
 type Gua = Seq Int
 data ZY = ZY
     { symbol  :: Gua
-    , name    :: ByteString
-    , content :: ByteString
+    , name    :: String
+    , content :: String
     } deriving (Generic, Show)
 instance FromJSON ZY
 type ZYType = Seq ZY
@@ -24,30 +23,30 @@ type ZYType = Seq ZY
 divine
     :: Arguments  -- ^ arguments in the cli
     -> ByteString -- ^ data for string
-    -> Either ByteString ByteString -- ^ output info. Left value is the output string. Right value is the error string.
-divine Arguments {..} dataStr =
-  do
-    zy <- decodeEither' dataStr
-    idx <- readGuaNumber g'
+    -> Either String String -- ^ output info. Left value is the output string. Right value is the error string.
+divine Arguments {..} dataStr = do
+    zy <- parseDE $ decodeEither' dataStr
+    idx <- readGuaNumber g' zy
     return $ runReader output (zy `index` idx, idx)
   where
+    parseDE (Right z) = return z
+    parseDE (Left  e) = Left $ show e
     g  = generateGua
     g' = convertToGua g
-    gName  = Reader $ \(ZY {name}, _) -> "卦名：" `append` name
-    gGen   = Reader $ \_ -> "卦："   `append` foldr (append . (flip . append $ " ") . show) g ""
-    gOrig  = Reader $ \_ -> "本卦：" `append` foldr (append . (flip . append $ " ") . show) g' ""
-    gZhi   = Reader $ \_ -> "之卦：" `append` foldr (append . (flip . append $ " ") . show) (convertToZhiGua g') ""
-    gIdx   = Reader $ \(_ , idx) -> "卦序：" `append` show idx `append` "（0-63）"
-    gText  = Reader $ \(ZY {content}, idx) -> "卦辞：" `append` content
-    output =
-      do
+    gName  = reader $ \(ZY {name}, _) -> "卦名：" ++ name
+    gGen   = reader $ \_ -> "卦："   ++ concatMap ((++" ") . show) g
+    gOrig  = reader $ \_ -> "本卦：" ++ concatMap ((++" ") . show) g'
+    gZhi   = reader $ \_ -> "之卦：" ++ concatMap ((++" ") . show) (convertToZhiGua g')
+    gIdx   = reader $ \(_, idx) -> "卦序：" ++ show idx ++ "（0-63）"
+    gText  = reader $ \(ZY {content}, _) -> "卦辞：" ++ content
+    output = do
         idx  <- gIdx
         name <- gName
         gen  <- gGen
         orig <- gOrig
         zhi  <- gZhi
         text <- gText
-        return $ concat [idx, name, gen, orig, zhi, text]
+        return $ unlines [idx, name, gen, orig, zhi, text]
 
 -- | Generate one 爻 with 三变 method
 generateYao
@@ -89,5 +88,9 @@ convertToZhiGua = convertToGua . fmap (\y ->
 readGuaNumber
     :: Gua                   -- ^ converted gua
     -> ZYType                -- ^ data for zy
-    -> Either ByteString Int -- ^ number of the gua
-readGuaNumber g zy = Left "Not finish"
+    -> Either String Int -- ^ number of the gua
+readGuaNumber g zy = maybe errorLeft return find
+  where
+    errorLeft = Left "Not Found Gua, please contact to developer to fix."
+    find = findIndexL eq' zy
+    eq' (ZY {symbol}) = g == symbol
