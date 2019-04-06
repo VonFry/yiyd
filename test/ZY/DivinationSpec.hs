@@ -8,18 +8,20 @@ import Arguments
 import ZY.Divination
 
 import Data.String (fromString)
+import System.IO hiding (readFile)
 import Prelude hiding (readFile)
 import Data.ByteString (readFile)
 import Paths_yiyd
 
 spec = do
     it "divine" $
-        satisfy (dataStrIO >>= return . divine args) `shouldReturn` True
+        satisfy (divine args <$> dataStrIO) `shouldReturn` True
   where
+      dataPathIO = getDataFileName "zy.yml"
       dataStrIO = do
-          dataPath <- getDataFileName "zy.yml"
+          dataPath <- dataPathIO
           readFile $ fromString dataPath
-      satisfy e = e >>= \case
+      satisfy = (=<<) $ \case
           Right _ -> return True
           _       -> return False
       args = Arguments

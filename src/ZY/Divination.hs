@@ -6,7 +6,7 @@ import Control.Monad.Reader (reader, runReader)
 import Data.ByteString (ByteString)
 import Data.Sequence (Seq(..), findIndexL, index)
 import GHC.Generics (Generic)
-import System.Random (randomR, mkStdGen)
+import System.Random (randomR, mkStdGen, StdGen)
 import Data.Yaml (decodeEither', FromJSON)
 
 import Arguments (Arguments(..))
@@ -15,7 +15,7 @@ type Gua = Seq Int
 data ZY = ZY
     { symbol  :: Gua
     , name    :: String
-    , content :: String
+    , content :: Seq String
     } deriving (Generic, Show)
 instance FromJSON ZY
 type ZYType = Seq ZY
@@ -31,18 +31,18 @@ divine args dataStr = do
   where
     parseDE (Right z) = return z
     parseDE (Left  e) = Left $ show e
-    checkArgQY args@(Arguments {..}) str
+    checkArgQY (Arguments {..}) str
         | (argQuiet && argYao) || not argQuiet = str
         | otherwise = ""
     g  = generateGua
     g' = convertToGua g
-    gName  = reader $ \(_, ZY {name}, _) -> "卦名：" ++ name
-    gGen   = reader $ \(args, _, _) -> checkArgQY args $ "爻：" ++ concatMap ((++" ") . show) g
-    gOrig  = reader $ \(args, _, _) -> checkArgQY args $ "本卦：" ++ concatMap ((++" ") . show) g'
-    gZhi   = reader $ \(args, _, _) -> checkArgQY args $ "之卦：" ++ concatMap ((++" ") . show) (convertToZhiGua g')
-    gIdx   = reader $ \(_, _, idx) -> "卦序：" ++ show idx ++ "（0-63）"
+    gName  = reader $ \(_, ZY {name}, _) -> "卦名：\t" ++ name
+    gGen   = reader $ \(args, _, _) -> checkArgQY args $ "爻：\t" ++ concatMap ((++" ") . show) g
+    gOrig  = reader $ \(args, _, _) -> checkArgQY args $ "本卦：\t" ++ concatMap ((++" ") . show) g'
+    gZhi   = reader $ \(args, _, _) -> checkArgQY args $ "之卦：\t" ++ concatMap ((++" ") . show) (convertToZhiGua g')
+    gIdx   = reader $ \(_, _, idx) -> "卦序：\t" ++ show (succ idx) ++ "（1-64）"
     gText  = reader $ \((Arguments {argQuiet}), ZY {content}, _) ->
-        if argQuiet then "卦辞：" ++ content
+        if not argQuiet then "卦辞：" ++ concatMap (++"\n\t") content
                     else ""
     output = do
         idx  <- gIdx
@@ -55,23 +55,18 @@ divine args dataStr = do
 
 -- | Generate one 爻 with 三变 method
 generateYao
-    :: Int -- ^ seed
-    -> Int -- ^ return 9, 8, 7, 6.
-generateYao seed = fst r
-  where
-    g = mkStdGen seed
-    r = randomR (6, 9) g
+    :: StdGen        -- ^ seed
+    -> (Int, StdGen) -- ^ return 9, 8, 7, 6.
+generateYao seed = randomR (6, 9) seed
 
 -- | generate 卦
 generateGua :: Gua
-generateGua = generateGua' Empty
+generateGua = generateGua' Empty (mkStdGen 64)
   where
-    generateGua' :: Gua -> Gua
-    generateGua' g =
-        let l = length g in
-        if l <= 6
-            then generateGua' $ generateYao l :<| g
-            else g
+    generateGua' g s =
+        let (g', s') = generateYao s
+        in if length g < 6 then generateGua' (g' :<| g) s'
+                           else g
 
 -- | convert to 本卦.
 convertToGua
@@ -96,6 +91,6 @@ readGuaNumber
     -> Either String Int -- ^ number of the gua
 readGuaNumber g zy = maybe errorLeft return find
   where
-    errorLeft = Left "Not Found Gua."
+    errorLeft = Left $ "Not Found Gua: " ++ show g
     find = findIndexL eq' zy
     eq' (ZY {symbol}) = g == symbol
