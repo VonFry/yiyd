@@ -3,6 +3,9 @@ image: haskell:8
 cache:
   untracked: true
 
+before_script:
+  - cabal new-update
+
 stages:
   - pre
   - build
@@ -12,7 +15,7 @@ stages:
 
 pre:
   stage: pre
-  script: cabal new-update; cabal sandbox init; cabal new-install --only-dependencies
+  script: cabal new-update
   only:
     refs:
       - master
@@ -46,7 +49,7 @@ dist:
 upload:
   when: manual
   stage: upload
-  script: cabal upload ---username=$HACKAGE_USERNAME --password=$HACKAGE_PASSWORD -publish ./dist/
+  script: cabal upload --publish ./dist/
   only:
     - master
   environment:
