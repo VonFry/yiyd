@@ -1,8 +1,8 @@
 # yiyd
 ![lang: haskell](https://img.shields.io/badge/lang-haskell-brightgreen.svg)
-[![Travis Master](https://img.shields.io/travis/VonFry/yiyd/master.svg?label=master)](https://travis-ci.org/VonFry/yiyd)
-[![Travis Dev](https://img.shields.io/travis/VonFry/yiyd/develop.svg?label=develop)](https://travis-ci.org/VonFry/yiyd)
 [![Hackage](https://img.shields.io/hackage/v/yiyd.svg)](https://hackage.haskell.org/package/yiyd)
+![Gitlab pipeline status (master)](https://img.shields.io/gitlab/pipeline/Vonfry/yiyd/master.svg)
+![Gitlab pipeline status (develop)](https://img.shields.io/gitlab/pipeline/Vonfry/yiyd/develop.svg)
 
 This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese traditional divination with _zhouyi_. So I'll write other document with Chinese instead of other language. I think it's so hard to describe them without chinese.
 
@@ -12,28 +12,33 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 本项目仍开发中，什么时候会完成本人也不知道，说不定永远写不完呢。
 
-# 功能
+# 功能(Function)
 
 按蓍草占卜法，配合周易，生成结果。
 
-# 安装
+# 安装(Install)
 
-## clone
+Some ways are supported to install this package.
+
+- hackage
+- source
+
+## Source
+
+### clone
 
 1. clone
-2. `stack build`
-3. (optional) `stack install`
+2. build
+3. (optional) install
 
-也可以使用`cabal`。如果不是haskell开发员，为什么不自己写一个呢？本上没有上homebrew一类管理的想法。
+### build
 
-## hackage
+This project use Nix and cabal as the default building system, so you can use one of them to build this project.
 
-在项目最基本功能完成前，不会发布至hackage。
+There are some build
+###
 
-`cabal install yiyd`
-
-# 使用
-
+# 使用(Usage)
 
 | 参数 | 说明 |
 | --- | --- |
@@ -41,6 +46,14 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 | `--yao`, `-y` | 在`quiet`下，结果追加爻辞 |
 
 注：如果想要保存至文件或什么，请使用重定向
+
+# 说明(docs)
+
+dot文件为graphviz语法，可用对应命令生成图片。
+
+所有图片为简图，可能不太好理解。
+
+- [一爻生成过程](./docs/一爻.dot)
 
 # TODO
 
@@ -63,4 +76,3 @@ See: [todo](./todo.org)
 这样，推演过程就全部结束，得到一个六爻“本卦”或加上一个“之卦”。以上介绍的这种占筮取卦方法即为后人所称“文王卦”或“六爻大课”。
 
 然后，根据相应的推论规则对推演所成的卦进行推论（推理解释）。
-

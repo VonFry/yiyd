@@ -1,0 +1,57 @@
+image: haskell:8
+
+cache:
+  untracked: true
+
+before_script:
+  - cabal new-update
+
+stages:
+  - pre
+  - build
+  - test
+  - dist
+  - upload
+
+pre:
+  stage: pre
+  script: cabal new-update
+  only:
+    refs:
+      - master
+      - develop
+
+build:
+  stage: build
+  script: cabal new-build
+  only:
+    refs:
+      - master
+      - develop
+
+test:
+  stage: test
+  script: cabal new-test
+  only:
+    refs:
+      - master
+      - develop
+
+dist:
+  stage: dist
+  script: cabal new-sdist
+  artifacts:
+    paths:
+      - dist-newstyle/sdist/yiyd-*.tar.gz
+  only:
+    - master
+
+upload:
+  when: manual
+  stage: upload
+  script: cabal upload --publish ./dist/
+  only:
+    - master
+  environment:
+    name: hackage
+    url: https://hackage.haskell.org/package/yiyd

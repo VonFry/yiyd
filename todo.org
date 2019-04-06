@@ -1,0 +1,11 @@
+* yiyd [1/2]
+** TODO divine [2/6]
+   - [ ] three changes for a yao
+   - [X] iter yao on a gua
+   - [X] integrate a gua
+   - [ ] get number of a gua
+   - [ ] print gua
+   - [ ] +a iter func for ask+
+** DONE main [0/1]
+   CLOSED: [2017-12-31 日 10:56]
+   - [ ] +iter for ask+
