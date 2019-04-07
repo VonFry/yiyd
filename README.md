@@ -1,8 +1,8 @@
 # yiyd
 ![lang: haskell](https://img.shields.io/badge/lang-haskell-brightgreen.svg)
 [![Hackage](https://img.shields.io/hackage/v/yiyd.svg)](https://hackage.haskell.org/package/yiyd)
-![Gitlab pipeline status (master)](https://img.shields.io/gitlab/pipeline/Vonfry/yiyd/master.svg)
-![Gitlab pipeline status (develop)](https://img.shields.io/gitlab/pipeline/Vonfry/yiyd/develop.svg)
+![Gitlab pipeline status (branch)](https://img.shields.io/gitlab/pipeline/vonfry/yiyd/master.svg?label=master)
+![Gitlab pipeline status (branch)](https://img.shields.io/gitlab/pipeline/vonfry/yiyd/develop.svg?label=develop)
 
 This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese traditional divination with _zhouyi_. So I'll write other document with Chinese instead of other language. I think it's so hard to describe them without chinese.
 
