@@ -1,10 +1,29 @@
 image: haskell:8
 
 cache:
-  untracked: true
+  paths:
+    - .cabal/
 
 before_script:
-  - cabal new-update
+  - export CABAL_DIR=$(pwd)/.cabal
+  - export PATH=$CABAL_DIR/bin:$PATH
+  - export CABAL_CONFIG=$CABAL_DIR/config
+  - mkdir -p $CABAL_DIR
+  - |
+    cat > $CABAL_CONFIG << EOF
+    remote-build-reporting: anonymous
+    repository hackage.haskell.org
+      url: http://hackage.haskell.org/
+    remote-repo-cache: $CABAL_DIR/.cabal/packages
+    logs-dir:          $CABAL_DIR/.cabal/logs
+    world-file:        $CABAL_DIR/.cabal/world
+    extra-prog-path:   $CABAL_DIR/.cabal/bin
+    symlink-bindir:    $CABAL_DIR/.cabal/bin
+    build-summary:     $CABAL_DIR/.cabal/logs/build.log
+    store-dir:         $CABAL_DIR/.cabal/store
+    install-dirs user
+      prefix: $CABAL_DIR/.cabal
+    EOF
 
 stages:
   - pre
@@ -15,7 +34,9 @@ stages:
 
 pre:
   stage: pre
-  script: cabal new-update
+  script:
+    - cabal new-update
+    - cabal new-install --only-dependencies --upgrade-dependencies
   only:
     refs:
       - master
@@ -31,7 +52,7 @@ build:
 
 test:
   stage: test
-  script: cabal new-test
+  script: cabal new-test; which hspec-discover; echo $PATH; ls $CABAL_DIR/bin; ls /opt/ghc/bin
   only:
     refs:
       - master
