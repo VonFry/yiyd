@@ -10,8 +10,6 @@ This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese tradit
 
 关于蓍草占卜流程，请通过源代码或其它方式了解。本人目前不想在文档中多写。
 
-本项目仍开发中，什么时候会完成本人也不知道，说不定永远写不完呢。
-
 # 功能(Function)
 
 按蓍草占卜法，配合周易，生成结果。
