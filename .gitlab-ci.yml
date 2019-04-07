@@ -52,7 +52,7 @@ build:
 
 test:
   stage: test
-  script: cabal new-test; which hspec-discover; echo $PATH; ls $CABAL_DIR/bin; ls /opt/ghc/bin
+  script: cabal new-test
   only:
     refs:
       - master

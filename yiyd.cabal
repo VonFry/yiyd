@@ -1,6 +1,6 @@
 cabal-version:       2.4
 name:                yiyd
-version:             1.0.0
+version:             1.0.1
 description:         This project's whole name is __Zhou Yi Yarrow divination__. Its a Chinese traditional divination with _zhouyi_. So I'll write other document with Chinese instead of other language. I think it's so hard to describe them without chinese.
 homepage:            https://gitlab.com/Vonfry/yiyd
 license:             GPL-3.0-only
@@ -59,6 +59,7 @@ test-suite test
   build-tool-depends:  hspec-discover:hspec-discover
   autogen-modules:     Paths_yiyd
   other-modules:       ZY.Divination
+                       ZY.DivinationSpec
                     ,  Paths_yiyd
                     ,  Arguments
   cpp-options:      -DDEBUG
